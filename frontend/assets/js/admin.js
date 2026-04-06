@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Variable global de estado copiada del mock (para que sea mutable al usar CRUD)
     let serviciosAdmin = [...(window.mockServices || [])];
+    let promosAdmin = [...(window.mockPromociones || [])];
     
     // --- NAVEGACIÓN Y SIDEBAR ---
     const sidebar = document.getElementById('sidebar');
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Refrescar vistas al entrar
             if(viewId === 'dashboard') renderDashboard();
             if(viewId === 'servicios') renderTable();
+            if(viewId === 'promociones') typeof renderPromosTable === 'function' && renderPromosTable();
         });
     });
 
@@ -48,6 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const activos = serviciosAdmin.filter(s => s.activo).length;
         document.getElementById('kpi-activos').textContent = activos;
+
+        const promosActivas = promosAdmin.filter(p => p.activo).length;
+        const kpiPromos = document.getElementById('kpi-promociones');
+        if(kpiPromos) kpiPromos.textContent = promosActivas;
 
         renderChart();
     };
@@ -221,7 +227,132 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    // --- CRUD DE PROMOCIONES ---
+    const promosTbody = document.getElementById('promos-tbody');
+    
+    const renderPromosTable = () => {
+        if(!promosTbody) return;
+        promosTbody.innerHTML = '';
+        
+        if (promosAdmin.length === 0) {
+            promosTbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No hay promociones registradas.</td></tr>';
+            return;
+        }
+
+        promosAdmin.forEach(p => {
+            const row = document.createElement('tr');
+            const badgeClass = p.activo ? 'active' : 'inactive';
+            const badgeText = p.activo ? 'Activo' : 'Inactivo';
+            const imgUrl = p.imagen || 'https://via.placeholder.com/50';
+
+            row.innerHTML = `
+                <td><img src="${imgUrl}" alt="${p.titulo}" class="thumb-img"></td>
+                <td><strong>${p.titulo}</strong></td>
+                <td>${p.descripcion}</td>
+                <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+                <td>
+                    <button class="btn btn-icon btn-edit-promo" data-id="${p.id}" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-icon btn-delete-promo" data-id="${p.id}" title="Eliminar"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            promosTbody.appendChild(row);
+        });
+
+        // Eventos Editar/Eliminar
+        document.querySelectorAll('.btn-edit-promo').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.getAttribute('data-id');
+                openPromoModalEditar(id);
+            });
+        });
+
+        document.querySelectorAll('.btn-delete-promo').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.getAttribute('data-id');
+                if(confirm('¿Estás seguro de eliminar esta promoción?')) {
+                    promosAdmin = promosAdmin.filter(p => p.id !== id);
+                    renderPromosTable();
+                    renderDashboard();
+                }
+            });
+        });
+    };
+
+    // --- MODAL PROMOCIONES ---
+    const promoModal = document.getElementById('promo-modal');
+    const promoForm = document.getElementById('promo-form');
+    const btnAddPromo = document.getElementById('btn-add-promo');
+    const btnClosePromo = document.getElementById('modal-promo-close');
+    const btnCancelPromo = document.getElementById('modal-promo-cancel');
+
+    const openPromoModal = () => {
+        if(!promoModal) return;
+        promoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+    
+    const closePromoModal = () => {
+        if(!promoModal) return;
+        promoModal.classList.remove('active');
+        document.body.style.overflow = '';
+        if(promoForm) promoForm.reset();
+        document.getElementById('form-promo-id').value = '';
+        document.getElementById('modal-promo-title').innerText = 'Agregar Promoción';
+    };
+
+    if(btnAddPromo) btnAddPromo.addEventListener('click', openPromoModal);
+    if(btnClosePromo) btnClosePromo.addEventListener('click', closePromoModal);
+    if(btnCancelPromo) btnCancelPromo.addEventListener('click', closePromoModal);
+    
+    if(promoModal) {
+        promoModal.addEventListener('click', (e) => {
+            if(e.target === promoModal) closePromoModal();
+        });
+    }
+
+    const openPromoModalEditar = (id) => {
+        const promo = promosAdmin.find(p => p.id === id);
+        if(!promo) return;
+
+        document.getElementById('modal-promo-title').innerText = 'Editar Promoción';
+        document.getElementById('form-promo-id').value = promo.id;
+        document.getElementById('form-promo-titulo').value = promo.titulo;
+        document.getElementById('form-promo-descripcion').value = promo.descripcion;
+        document.getElementById('form-promo-imagen').value = promo.imagen || '';
+        document.getElementById('form-promo-activo').checked = promo.activo;
+        
+        openPromoModal();
+    };
+
+    if(promoForm) {
+        promoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('form-promo-id').value;
+            const nuevaPromo = {
+                id: id ? id : 'p_' + Date.now().toString(),
+                titulo: document.getElementById('form-promo-titulo').value,
+                descripcion: document.getElementById('form-promo-descripcion').value,
+                imagen: document.getElementById('form-promo-imagen').value || 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                activo: document.getElementById('form-promo-activo').checked
+            };
+
+            if (id) {
+                const index = promosAdmin.findIndex(p => p.id === id);
+                if (index !== -1) promosAdmin[index] = nuevaPromo;
+            } else {
+                promosAdmin.push(nuevaPromo);
+            }
+
+            renderPromosTable();
+            closePromoModal();
+            renderDashboard();
+            
+            alert(id ? 'Promoción actualizada.' : 'Promoción creada.');
+        });
+    }
+
     // INIT
-    renderDashboard();
     renderTable();
+    if(typeof renderPromosTable === 'function') renderPromosTable();
 });

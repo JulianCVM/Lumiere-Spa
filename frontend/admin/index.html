@@ -28,11 +28,8 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="#" class="active" data-view="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                    <li><a href="#" data-view="servicios"><i class="fas fa-list"></i> Servicios</a></li>
-                    <li><a href="#"><i class="fas fa-tags"></i> Categorías</a></li>
-                    <li><a href="#"><i class="fas fa-dollar-sign"></i> Precios</a></li>
-                    <li><a href="#"><i class="fas fa-images"></i> Imágenes</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li><a href="#" data-view="servicios"><i class="fas fa-list"></i> Servicios / Catálogo</a></li>
+                    <li><a href="#" data-view="promociones"><i class="fas fa-bullhorn"></i> Promociones / Avisos</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -76,6 +73,13 @@
                             <p id="kpi-activos">0</p>
                         </div>
                     </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-bullhorn"></i></div>
+                        <div class="kpi-info">
+                            <h3>Promos Activas</h3>
+                            <p id="kpi-promociones">0</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="chart-section">
@@ -109,6 +113,34 @@
                             </tr>
                         </thead>
                         <tbody id="services-tbody">
+                            <!-- Generado por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+
+            <!-- Promociones View -->
+            <div id="view-promociones" class="content-view">
+                <div class="view-header">
+                    <h1>Gestión de Promociones y Avisos</h1>
+                    <button class="btn btn-primary" id="btn-add-promo">
+                        <i class="fas fa-plus"></i> Nueva Promoción
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Banner</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promos-tbody">
                             <!-- Generado por JS -->
                         </tbody>
                     </table>
@@ -170,6 +202,48 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-outline" id="modal-cancel">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar Servicio</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Promociones -->
+    <div class="modal" id="promo-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-promo-title">Agregar Promoción</h2>
+                <button class="close-btn" id="modal-promo-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="promo-form">
+                    <input type="hidden" id="form-promo-id">
+                    
+                    <div class="form-group">
+                        <label for="form-promo-titulo">Título de la Promoción <span class="required">*</span></label>
+                        <input type="text" id="form-promo-titulo" class="form-control" placeholder="Ej. ¡Jueves 2x1!" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-promo-descripcion">Descripción y Condiciones <span class="required">*</span></label>
+                        <textarea id="form-promo-descripcion" class="form-control" required placeholder="Si compras Uñas X, tienes un 20% en..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-promo-imagen">URL del Banner/Imagen</label>
+                        <input type="url" id="form-promo-imagen" class="form-control" placeholder="https://ejemplo.com/banner.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="form-promo-activo" checked>
+                            Promoción Activa visible al público
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="modal-promo-cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Promoción</button>
                     </div>
                 </form>
             </div>

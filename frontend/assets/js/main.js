@@ -52,24 +52,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         container.innerHTML = activos.map(servicio => `
-            <div class="card-servicio">
-                <div class="card-img-container">
-                    <img src="${servicio.imagen}" alt="${servicio.nombre}" loading="lazy">
-                </div>
-                <div class="card-content">
+            <div class="premium-card">
+                <div class="card-img-bg" style="background-image: url('${servicio.imagen}');" role="img" aria-label="${servicio.nombre}"></div>
+                <div class="premium-card-overlay">
                     <span class="card-category">${servicio.categoria}</span>
                     <h3 class="card-title">${servicio.nombre}</h3>
-                    <p class="card-desc">${servicio.descripcion}</p>
-                    <div class="card-footer">
-                        <span class="card-price">$${servicio.precio.toFixed(2)}</span>
-                        <a href="#contacto" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Reservar</a>
+                    <div class="premium-card-details">
+                        <p class="card-desc">${servicio.descripcion}</p>
+                        <div class="card-footer">
+                            <span class="card-price">$${servicio.precio.toFixed(2)}</span>
+                            <a href="#contacto" class="btn btn-outline btn-sm">Reservar</a>
+                        </div>
                     </div>
                 </div>
             </div>
         `).join('');
     };
 
+    // Renderizar Promociones
+    const renderizarPromociones = () => {
+        const container = document.getElementById('promociones-container');
+        const section = document.getElementById('promociones');
+        if (!container || !section) return;
+
+        const promos = window.mockPromociones || [];
+        const activas = promos.filter(p => p.activo);
+
+        if (activas.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+
+        container.innerHTML = activas.map(promo => `
+            <div class="promo-poster" style="background-image: linear-gradient(to right, rgba(44,24,16,0.95) 0%, rgba(44,24,16,0.5) 60%, rgba(44,24,16,0.1) 100%), url('${promo.imagen}')">
+                <div class="promo-content">
+                    <span class="promo-badge">OFERTA LIMITADA</span>
+                    <h3 class="promo-title">${promo.titulo}</h3>
+                    <p class="promo-desc">${promo.descripcion}</p>
+                    <a href="#contacto" class="btn btn-primary">Aprovechar Promo</a>
+                </div>
+            </div>
+        `).join('');
+    };
+
     renderizarCatalogo();
+    renderizarPromociones();
 
     // 4. Animaciones on Scroll (Intersection Observer)
     const fadeElements = document.querySelectorAll('.fade-in');

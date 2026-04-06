@@ -73,9 +73,20 @@ const mockServices = [
     }
 ];
 
+const mockPromociones = [
+    {
+        id: "p1",
+        titulo: "¡Jueves de Spa!",
+        descripcion: "Si aplicas para Uñas Acrílicas Premium hoy, obtén un 20% de descuento en tu Limpieza Facial en la misma visita.",
+        imagen: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        activo: true
+    }
+];
+
 // Si el script se carga en el navegador como módulo, se exporta:
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = mockServices;
+    module.exports = { mockServices, mockPromociones };
 } else if (typeof window !== 'undefined') {
-    window.mockServices = mockServices; // Global para facilitar el uso sin modules
+    window.mockServices = mockServices; // Global
+    window.mockPromociones = mockPromociones; // Global
 }
