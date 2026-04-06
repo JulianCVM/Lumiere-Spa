@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Lumière Spa</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body>
+
+    <!-- Sidebar Layout -->
+    <div class="admin-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Lumière Spa</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active" data-view="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                    <li><a href="#" data-view="servicios"><i class="fas fa-list"></i> Servicios</a></li>
+                    <li><a href="#"><i class="fas fa-tags"></i> Categorías</a></li>
+                    <li><a href="#"><i class="fas fa-dollar-sign"></i> Precios</a></li>
+                    <li><a href="#"><i class="fas fa-images"></i> Imágenes</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/"><i class="fas fa-arrow-left"></i> Volver a Tienda</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Móvil Admin (Menu Toggle) -->
+            <div class="admin-header">
+                <button id="admin-menu-toggle"><i class="fas fa-bars"></i></button>
+                <div class="user-info">
+                    <span>Admin</span> <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="content-view active">
+                <h1>Panorama General</h1>
+                
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-concierge-bell"></i></div>
+                        <div class="kpi-info">
+                            <h3>Total Servicios</h3>
+                            <p id="kpi-total">0</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-tags"></i></div>
+                        <div class="kpi-info">
+                            <h3>Categorías</h3>
+                            <p id="kpi-categorias">0</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-toggle-on"></i></div>
+                        <div class="kpi-info">
+                            <h3>Servicios Activos</h3>
+                            <p id="kpi-activos">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h2>Servicios por Categoría</h2>
+                    <!-- Gráfica de barras simple hecha con CSS vanilla -->
+                    <div class="css-chart" id="css-chart">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Servicios View -->
+            <div id="view-servicios" class="content-view">
+                <div class="view-header">
+                    <h1>Catálogo de Servicios</h1>
+                    <button class="btn btn-primary" id="btn-add-service">
+                        <i class="fas fa-plus"></i> Agregar Servicio
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-tbody">
+                            <!-- Generado por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Formulario (Crear/Editar) -->
+    <div class="modal" id="service-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Agregar Servicio</h2>
+                <button class="close-btn" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="service-form">
+                    <input type="hidden" id="form-id">
+                    
+                    <div class="form-group">
+                        <label for="form-nombre">Nombre del Servicio <span class="required">*</span></label>
+                        <input type="text" id="form-nombre" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-categoria">Categoría <span class="required">*</span></label>
+                        <select id="form-categoria" class="form-control" required>
+                            <option value="Uñas">Uñas</option>
+                            <option value="Facial">Facial</option>
+                            <option value="Maquillaje">Maquillaje</option>
+                            <option value="Peinados">Peinados</option>
+                            <option value="Depilación">Depilación</option>
+                            <option value="Corporal">Corporal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-precio">Precio ($) <span class="required">*</span></label>
+                        <input type="number" id="form-precio" class="form-control" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-imagen">URL de la Imagen</label>
+                        <input type="url" id="form-imagen" class="form-control" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-descripcion">Descripción</label>
+                        <textarea id="form-descripcion" class="form-control"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="form-activo" checked>
+                            Servicio visible al público (Activo)
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="modal-cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Servicio</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cargar mock data general y lógica de admin -->
+    <script src="../assets/js/mock-data.js"></script>
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>
