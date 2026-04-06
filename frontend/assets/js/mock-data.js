@@ -80,6 +80,20 @@ const mockPromociones = [
         descripcion: "Si aplicas para Uñas Acrílicas Premium hoy, obtén un 20% de descuento en tu Limpieza Facial en la misma visita.",
         imagen: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         activo: true
+    },
+    {
+        id: "p2",
+        titulo: "Día de Amigas",
+        descripcion: "Ven con una amiga a hacerse Maquillaje Profesional y la segunda paga solo el 50%. Ideal para eventos.",
+        imagen: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        activo: true
+    },
+    {
+        id: "p3",
+        titulo: "Ritual Rejuvenecedor",
+        descripcion: "Compra un paquete de 3 Tratamientos Anti-Edad y recibe gratis un Diseño de Cejas con Henna.",
+        imagen: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        activo: true
     }
 ];
 
