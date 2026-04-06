@@ -1,0 +1,19 @@
+[build]
+  publish = "frontend"
+  # No command needed for a purely static site
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+# Redirección global estándar para el template single-page
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

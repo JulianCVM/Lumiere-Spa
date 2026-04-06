@@ -5,7 +5,9 @@
   "main": "backend/index.js",
   "scripts": {
     "start": "node backend/index.js",
-    "dev": "node backend/index.js"
+    "dev": "node backend/index.js",
+    "deploy:preview": "npx netlify-cli deploy",
+    "deploy": "npx netlify-cli deploy --prod"
   },
   "dependencies": {
     "cors": "^2.8.5",
