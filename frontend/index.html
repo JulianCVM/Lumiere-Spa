@@ -31,7 +31,12 @@
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#catalogo">Catálogo</a></li>
                 <li><a href="#contacto">Contacto</a></li>
-                <li><a href="#contacto" class="btn btn-primary" style="color:white !important;">Reservar cita</a></li>
+                <li class="navbar-actions">
+                    <button id="theme-toggle" class="btn-icon theme-switch" aria-label="Cambiar tema">
+                        <i class="fas fa-moon"></i> <span id="theme-text">Modo Oscuro</span>
+                    </button>
+                    <a href="#contacto" class="btn btn-primary" style="color:white !important;">Reservar cita</a>
+                </li>
             </ul>
         </div>
     </header>
@@ -65,8 +70,12 @@
     <!-- Sección Promociones Especiales -->
     <section id="promociones" class="container fade-in" style="display: none; margin-top: 2rem;">
         <h2 class="section-title">Promociones Exclusivas</h2>
-        <div class="promos-container" id="promociones-container">
-            <!-- Se poblará con main.js -->
+        <div class="carousel-wrapper">
+            <button class="carousel-btn prev-btn" id="promo-prev"><i class="fas fa-chevron-left"></i></button>
+            <div class="promos-container" id="promociones-container">
+                <!-- Se poblará con main.js -->
+            </div>
+            <button class="carousel-btn next-btn" id="promo-next"><i class="fas fa-chevron-right"></i></button>
         </div>
     </section>
 
@@ -76,6 +85,17 @@
             <h2 class="section-title">Nuestro Catálogo</h2>
             <p style="text-align: center; margin-bottom: 3rem; max-width: 700px; margin-inline: auto;">Explora nuestra selecta gama de tratamientos diseñados meticulosamente para revitalizar tu cuerpo, mente y espíritu.</p>
             
+            <!-- Filtros de Catálogo -->
+            <div class="catalog-filters">
+                <button class="filter-btn active" data-filter="Todos">Todos</button>
+                <button class="filter-btn" data-filter="Uñas">Uñas</button>
+                <button class="filter-btn" data-filter="Maquillaje">Maquillaje</button>
+                <button class="filter-btn" data-filter="Peinados">Peinados</button>
+                <button class="filter-btn" data-filter="Facial">Facial</button>
+                <button class="filter-btn" data-filter="Depilación">Depilación</button>
+                <button class="filter-btn" data-filter="Corporal">Corporal</button>
+            </div>
+
             <!-- Contenedor dinámico donde se inyectan los servicios via JS -->
             <div class="grid-servicios" id="servicios-container">
                 <!-- Se poblará con main.js y mock-data.js -->
@@ -167,6 +187,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- WhatsApp FAB -->
+    <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-btn" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Scripts -->
     <!-- Cargamos los datos mock primero -->
