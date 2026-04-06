@@ -35,6 +35,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Lógica de Filtros ---
+    let catalogoFilter = 'Todos';
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    if (filterBtns.length > 0) {
+        const secContainer = document.getElementById('servicios-container');
+        if(secContainer) secContainer.style.transition = 'opacity var(--transition-fast)';
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                catalogoFilter = btn.getAttribute('data-filter');
+                
+                if (secContainer) {
+                    secContainer.style.opacity = 0;
+                    setTimeout(() => {
+                        renderizarCatalogo();
+                        secContainer.style.opacity = 1;
+                    }, 200);
+                } else {
+                    renderizarCatalogo();
+                }
+            });
+        });
+    }
+
     // 3. Renderizar Catálogo usando mock-data.js
     const renderizarCatalogo = () => {
         const container = document.getElementById('servicios-container');
@@ -44,10 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const servicios = window.mockServices || [];
         
         // Filtramos solo los activos para la vista pública
-        const activos = servicios.filter(s => s.activo);
+        let activos = servicios.filter(s => s.activo);
+
+        // Aplicamos el filtro si es distinto a Todos
+        if (catalogoFilter !== 'Todos') {
+            activos = activos.filter(s => s.categoria === catalogoFilter);
+        }
 
         if (activos.length === 0) {
-            container.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">No hay servicios disponibles en este momento.</p>';
+            container.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">No hay servicios en esta categoría en este momento.</p>';
             return;
         }
 
@@ -99,6 +131,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderizarCatalogo();
     renderizarPromociones();
+
+    // --- Carrusel Promos Logic ---
+    const prevBtn = document.getElementById('promo-prev');
+    const nextBtn = document.getElementById('promo-next');
+    const promosContainer = document.getElementById('promociones-container');
+
+    if (prevBtn && nextBtn && promosContainer) {
+        prevBtn.addEventListener('click', () => {
+            promosContainer.scrollBy({ left: -promosContainer.clientWidth, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+            promosContainer.scrollBy({ left: promosContainer.clientWidth, behavior: 'smooth' });
+        });
+    }
+
+    // --- Theme Switcher (Dark Mode) ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+    const themeText = document.getElementById('theme-text');
+
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+            if(themeIcon) themeIcon.classList.replace('fa-moon', 'fa-sun');
+            if(themeText) themeText.textContent = 'Modo Claro';
+        }
+    }
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let switchToTheme = theme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', switchToTheme);
+            localStorage.setItem('theme', switchToTheme);
+            
+            if (switchToTheme === 'dark') {
+                if(themeIcon) themeIcon.classList.replace('fa-moon', 'fa-sun');
+                if(themeText) themeText.textContent = 'Modo Claro';
+            } else {
+                if(themeIcon) themeIcon.classList.replace('fa-sun', 'fa-moon');
+                if(themeText) themeText.textContent = 'Modo Oscuro';
+            }
+        });
+    }
 
     // 4. Animaciones on Scroll (Intersection Observer)
     const fadeElements = document.querySelectorAll('.fade-in');
