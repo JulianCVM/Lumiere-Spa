@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Fondo redondeado con el tono Dark Brown -->
+  <rect width="100" height="100" rx="24" fill="#2C1810"/>
+  <!-- Texto inicial en tipografía serif -->
+  <text y="54%" x="48%" dominant-baseline="middle" text-anchor="middle" font-size="62" font-family="Georgia, serif" fill="#F5E6E8" font-style="italic">L</text>
+  <!-- Destello (Lumière/Luz) con el color de acento -->
+  <path d="M72 20 Q74 28 82 30 Q74 32 72 40 Q70 32 62 30 Q70 28 72 20 Z" fill="#D4A5A5"/>
+</svg>
